@@ -3,7 +3,7 @@ module CircleRand
 
   def random_point radius=nil
     if radius
-      [0,0]
+      [5,Math::PI]
     end
   end
 end
