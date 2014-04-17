@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'ruby-standard-deviation'
+
 group :development, :test do
   gem 'rspec'
   gem 'guard'

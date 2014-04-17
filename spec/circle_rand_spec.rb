@@ -1,4 +1,5 @@
 require 'circle_rand'
+require 'ruby-standard-deviation'
 
 describe CircleRand do
   describe '#random_point' do
@@ -32,15 +33,19 @@ describe CircleRand do
       end
 
       context 'the statistical analysis' do
-        context 'over 1000 points' do
+        let(:arc) { Math::PI / 50.0 }
+
+        context 'over 100 points' do
           let(:points) { points = []
                          100.times {|num| points.push CircleRand.random_point(10)}
                          points
                        }
+            let(:all_distances) { points.collect(&:first) }
+            let(:distance_average) { all_distances.inject(:+) / all_distances.size }
+            let(:all_radians) { points.collect(&:last) }
+            let(:randian_average) { all_radians.inject(:+) / all_radians.size }
 
           context 'the distance' do
-            let(:all_distances) { points.collect(&:first) }
-            let(:average) { all_distances.inject(:+) / all_distances.size }
 
             it 'should average 5' do
               average.should be_within(0.5).of(5.0)
@@ -48,11 +53,26 @@ describe CircleRand do
           end
 
           context 'the radians' do
-            let(:all_radians) { points.collect(&:last) }
-            let(:average) { all_radians.inject(:+) / all_radians.size }
 
             it 'should average 5' do
               average.should be_within(0.5).of(Math::PI)
+            end
+          end
+
+          context 'the density accross 100 sectors' do
+            let(:buckets) { buckets = Array.new 100, 0
+                            points.each do |dist,rad|
+                                          # radians / arc
+                                          # round down for zero based index
+                                          index = (rad/arc).floor
+                                          buckets[index] += 1
+                                        end
+                            buckets
+                          }
+            let(:average) { buckets.inject(:+) / buckets.size }
+
+            it 'standard deviation be within 0.2 of 1' do
+              buckets.stdev.should be_within(0.2).of(1)
             end
           end
         end
