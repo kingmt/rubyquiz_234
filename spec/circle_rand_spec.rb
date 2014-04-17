@@ -15,20 +15,20 @@ describe CircleRand do
       subject { result }
 
       context 'the result' do
-      it { should be_kind_of Array }
-      its(:size) { should == 2 }
+        it { should be_kind_of Array }
+        its(:size) { should == 2 }
 
-      context 'distance' do
-        subject { result.first }
-        it { should >= 0 }
-        it { should <= 10 }
-      end
+        context 'distance' do
+          subject { result.first }
+          it { should >= 0 }
+          it { should <= 10 }
+        end
 
-      context 'radian' do
-        subject { result.last }
-        it { should >= 0 }
-        it { should <= 2*Math::PI }
-      end
+        context 'radian' do
+          subject { result.last }
+          it { should >= 0 }
+          it { should <= 2*Math::PI }
+        end
       end
     end
   end
