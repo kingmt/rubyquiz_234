@@ -74,12 +74,11 @@ describe CircleRand do
             end
           end
 
-          context 'the density accross 100 sectors' do
+          context 'the density accross 100 rings' do
             let(:buckets) { buckets = Array.new 100, 0
                             points.each do |dist,rad|
-                                          # radians / arc
                                           # round down for zero based index
-                                          index = (rad/arc).floor
+                                          index = (dist*(100/radius)).floor
                                           buckets[index] += 1
                                         end
                             buckets
