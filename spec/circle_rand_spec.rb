@@ -88,8 +88,8 @@ describe CircleRand do
                                     end
             }
 
-            it 'standard deviation be within 0.2 of 1' do
-              buckets.stdev.should be_within(0.2).of(1)
+            it 'standard deviation be within 0.3 of 0.65' do
+              points_per_area.stdev.should be_within(0.3).of(0.65)
             end
           end
         end

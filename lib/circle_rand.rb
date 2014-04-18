@@ -3,7 +3,10 @@ module CircleRand
 
   def random_point radius=nil
     if radius
-      [5,Kernel.rand*2*Math::PI]
+      # distance
+      [Math.sqrt(Kernel.rand)*radius,
+       # radians
+       Kernel.rand*2*Math::PI]
     end
   end
 end
