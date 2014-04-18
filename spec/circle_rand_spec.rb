@@ -33,29 +33,44 @@ describe CircleRand do
       end
 
       context 'the statistical analysis' do
+        let(:iterations) { 1_000_000 }
         let(:arc) { Math::PI / 50.0 }
+        let(:radius) { 10.0 }
+        let(:ring_slice) { radius/100 }
+        let(:area_of_each_ring) { (1..100).collect do |outer|
+                                    Math::PI * (
+                                      (outer)**2 -
+                                      ((outer-1))**2
+                                      #(ring_slice*outer)**2 -
+                                      #(ring_slice*(outer-1))**2
+                                    )
+                                  end
+                                }
 
-        context 'over 100 points' do
+        context 'over iteration number of points' do
           let(:points) { points = []
-                         100.times {|num| points.push CircleRand.random_point(10)}
+                         iterations.times do |num|
+                           points.push CircleRand.random_point(radius)
+                         end
                          points
                        }
             let(:all_distances) { points.collect(&:first) }
-            let(:distance_average) { all_distances.inject(:+) / all_distances.size }
             let(:all_radians) { points.collect(&:last) }
-            let(:randian_average) { all_radians.inject(:+) / all_radians.size }
 
-          context 'the distance' do
+          context 'the density accross 100 sectors' do
+            let(:buckets) { buckets = Array.new 100, 0
+                            points.each do |dist,rad|
+                                          # radians / arc
+                                          # round down for zero based index
+                                          index = (rad/arc).floor
+                                          buckets[index] += 1
+                                        end
+                            buckets
+                          }
 
-            it 'should average 5' do
-              average.should be_within(0.5).of(5.0)
-            end
-          end
-
-          context 'the radians' do
-
-            it 'should average 5' do
-              average.should be_within(0.5).of(Math::PI)
+            it 'normalized standard deviation be within 0.2 of 1' do
+              norm_stdev = buckets.stdev / Math.sqrt(iterations/100)
+              norm_stdev.should be_within(0.2).of(1)
             end
           end
 
