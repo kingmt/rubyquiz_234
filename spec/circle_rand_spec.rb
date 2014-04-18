@@ -83,7 +83,10 @@ describe CircleRand do
                                         end
                             buckets
                           }
-            let(:average) { buckets.inject(:+) / buckets.size }
+            let(:points_per_area) { (0...100).collect do |index|
+                                       buckets[index]/area_of_each_ring[index]
+                                    end
+            }
 
             it 'standard deviation be within 0.2 of 1' do
               buckets.stdev.should be_within(0.2).of(1)
