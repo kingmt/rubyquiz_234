@@ -17,10 +17,9 @@ class GenerateSvg
     1000.times do |count|
       distance, radian_angle = CircleRand.random_point radius
       # convert radial to grid
-      grid_point = [cos(radian_angle) * distance + center,
-                    sin(radian_angle) * distance + center
-                   ]
-      file.puts "<circle cx='#{grid_point[0]}' cy='#{grid_point[1]}' r='5' stroke='red' fill='red'/>"
+      grid_x = cos(radian_angle) * distance + center
+      grid_y = sin(radian_angle) * distance + center
+      file.puts "<circle cx='#{grid_x}' cy='#{grid_y}' r='5' stroke='red' fill='red'/>"
     end
     # svg footer
     file.puts "</svg>\n</body>\n</html>"
